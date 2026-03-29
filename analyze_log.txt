@@ -1,0 +1,51 @@
+Analyzing slap_app...                                           
+
+  error - Classes can only extend other classes - lib\application\controllers\dataset_controller.dart:34:33 - extends_non_class
+  error - Too many positional arguments: 0 expected, but 1 found - lib\application\controllers\dataset_controller.dart:42:13 - extra_positional_arguments
+  error - Undefined name 'state' - lib\application\controllers\dataset_controller.dart:45:9 - undefined_identifier
+  error - Undefined name 'state' - lib\application\controllers\dataset_controller.dart:47:7 - undefined_identifier
+  error - Undefined name 'state' - lib\application\controllers\dataset_controller.dart:47:15 - undefined_identifier
+  error - Undefined name 'state' - lib\application\controllers\dataset_controller.dart:52:7 - undefined_identifier
+  error - Undefined name 'state' - lib\application\controllers\dataset_controller.dart:52:15 - undefined_identifier
+  error - Undefined name 'mounted' - lib\application\controllers\dataset_controller.dart:57:10 - undefined_identifier
+  error - Undefined name 'state' - lib\application\controllers\dataset_controller.dart:60:5 - undefined_identifier
+  error - Undefined name 'state' - lib\application\controllers\dataset_controller.dart:60:13 - undefined_identifier
+  error - Undefined name 'state' - lib\application\controllers\dataset_controller.dart:64:10 - undefined_identifier
+  error - Undefined name 'state' - lib\application\controllers\dataset_controller.dart:73:7 - undefined_identifier
+  error - Undefined name 'state' - lib\application\controllers\dataset_controller.dart:73:15 - undefined_identifier
+warning - The method doesn't override an inherited method - lib\application\controllers\dataset_controller.dart:80:8 - override_on_non_overriding_member
+  error - The method 'dispose' isn't defined in a superclass of 'DatasetController' - lib\application\controllers\dataset_controller.dart:82:11 - undefined_super_member
+  error - Classes can only extend other classes - lib\application\controllers\slap_controller.dart:39:30 - extends_non_class
+  error - Too many positional arguments: 0 expected, but 1 found - lib\application\controllers\slap_controller.dart:49:13 - extra_positional_arguments
+  error - Undefined name 'state' - lib\application\controllers\slap_controller.dart:52:9 - undefined_identifier
+  error - Undefined name 'state' - lib\application\controllers\slap_controller.dart:60:5 - undefined_identifier
+  error - Undefined name 'state' - lib\application\controllers\slap_controller.dart:60:13 - undefined_identifier
+  error - Undefined name 'state' - lib\application\controllers\slap_controller.dart:66:5 - undefined_identifier
+  error - Undefined name 'state' - lib\application\controllers\slap_controller.dart:66:13 - undefined_identifier
+  error - Undefined name 'state' - lib\application\controllers\slap_controller.dart:81:7 - undefined_identifier
+  error - Undefined name 'state' - lib\application\controllers\slap_controller.dart:81:15 - undefined_identifier
+  error - Undefined name 'mounted' - lib\application\controllers\slap_controller.dart:89:13 - undefined_identifier
+  error - Undefined name 'state' - lib\application\controllers\slap_controller.dart:89:24 - undefined_identifier
+  error - Undefined name 'state' - lib\application\controllers\slap_controller.dart:90:11 - undefined_identifier
+  error - Undefined name 'state' - lib\application\controllers\slap_controller.dart:90:19 - undefined_identifier
+warning - The method doesn't override an inherited method - lib\application\controllers\slap_controller.dart:97:8 - override_on_non_overriding_member
+  error - The method 'dispose' isn't defined in a superclass of 'SlapController' - lib\application\controllers\slap_controller.dart:99:11 - undefined_super_member
+  error - The function 'StateProvider' isn't defined - lib\application\providers.dart:22:26 - undefined_function
+  error - The function 'StateNotifierProvider' isn't defined - lib\application\providers.dart:25:32 - undefined_function
+  error - The function 'StateNotifierProvider' isn't defined - lib\application\providers.dart:32:35 - undefined_function
+warning - The value of the field '_player' isn't used - lib\data\services\audio_service.dart:4:21 - unused_field
+warning - The value of the local variable 'soundFile' isn't used - lib\data\services\audio_service.dart:12:12 - unused_local_variable
+   info - Don't invoke 'print' in production code - lib\data\services\audio_service.dart:25:7 - avoid_print
+warning - Unused import: 'dart:math' - lib\domain\engine\slap_detector.dart:1:8 - unused_import
+warning - Unused import: '../models/sensor_data.dart' - lib\domain\models\slap_event.dart:1:8 - unused_import
+  error - Target of URI doesn't exist: 'screens/home_screen.dart' - lib\main.dart:4:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'screens/dataset_screen.dart' - lib\main.dart:5:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'screens/settings_screen.dart' - lib\main.dart:6:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'screens/stats_screen.dart' - lib\main.dart:7:8 - uri_does_not_exist
+  error - The name 'HomeScreen' isn't a class - lib\main.dart:47:11 - creation_with_non_type
+  error - The name 'DatasetScreen' isn't a class - lib\main.dart:48:11 - creation_with_non_type
+  error - The name 'StatsScreen' isn't a class - lib\main.dart:49:11 - creation_with_non_type
+  error - The name 'SettingsScreen' isn't a class - lib\main.dart:50:11 - creation_with_non_type
+   info - 'Share' is deprecated and shouldn't be used. Use SharePlus instead - lib\presentation\screens\settings_screen.dart:67:23 - deprecated_member_use
+   info - 'shareXFiles' is deprecated and shouldn't be used. Use SharePlus.instance.share() instead - lib\presentation\screens\settings_screen.dart:67:29 - deprecated_member_use
+
