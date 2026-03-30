@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:audioplayers/audioplayers.dart';
+import 'dart:math' as math;
 import 'home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -10,33 +12,29 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
-  late final Animation<double> _scaleAnimation;
-  late final Animation<double> _opacityAnimation;
+  late final AudioPlayer _audioPlayer;
 
   @override
   void initState() {
     super.initState();
+    _audioPlayer = AudioPlayer();
+    
+    // Extremely fast, punchy 1.4-second duration
     _controller = AnimationController(
        vsync: this, 
-       duration: const Duration(milliseconds: 500)
+       duration: const Duration(milliseconds: 1400) 
     );
     
-    // Smooth elastic scaling from 0.5x to 1.1x 
-    _scaleAnimation = Tween<double>(begin: 0.5, end: 1.1).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.elasticOut)
-    );
+    // Sync the "punch.mp3" to fire exactly upon the gravitational impact (t = 0.22 => 300ms)
+    Future.delayed(const Duration(milliseconds: 300), () {
+      if (mounted) _audioPlayer.play(AssetSource('sounds/punch.mp3'));
+    });
     
-    // Quick fade in 
-    _opacityAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _controller, curve: const Interval(0.0, 0.4, curve: Curves.easeIn))
-    );
-
     _controller.forward();
 
-    // The user strictly requested it lasts exactly 1 second as the app starts
-    Future.delayed(const Duration(milliseconds: 1000), () {
+    // Out transition seamlessly matches the timing
+    Future.delayed(const Duration(milliseconds: 1400), () {
       if (mounted) {
-        // Fade out into the real Home Screen with the glowing orb
         Navigator.of(context).pushReplacement(
           PageRouteBuilder(
             pageBuilder: (context, animation, secondaryAnimation) => const HomeScreen(),
@@ -53,39 +51,98 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
   @override
   void dispose() {
     _controller.dispose();
+    _audioPlayer.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF030303), // Ultra deep black
-      body: Center(
-        child: AnimatedBuilder(
-          animation: _controller,
-          builder: (context, child) {
-            return Opacity(
-              opacity: _opacityAnimation.value,
-              child: Transform.scale(
-                scale: _scaleAnimation.value,
-                child: const Text(
-                  'SLAP THE SHIT\nOUT OF IT!',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.redAccent,
-                    fontSize: 38,
-                    fontWeight: FontWeight.w900,
-                    height: 1.2,
-                    letterSpacing: 4.0,
-                    shadows: [
-                      Shadow(color: Colors.red, blurRadius: 40, offset: Offset(0, 10))
-                    ]
+      backgroundColor: const Color(0xFF030303),
+      body: AnimatedBuilder(
+        animation: _controller,
+        builder: (context, child) {
+          final t = _controller.value;
+          
+          double dropY = -400.0;
+          double scale = 1.0;
+          
+          if (t < 0.2) {
+             // Fierce gravitational acceleration drop
+             double factor = t / 0.2;
+             dropY = -400 + (400 * factor * factor * factor);
+          } else {
+             // Rest
+             dropY = 0.0;
+          }
+
+          if (t >= 0.2 && t <= 0.6) {
+             // Extremely heavy elastic collision bounce from hitting the rigid text below
+             double impact = 1.0 - ((t - 0.2) / 0.4);
+             scale = 1.0 + (math.sin(impact * math.pi * 3) * 0.2 * (impact * impact));
+          }
+
+          // A volumetric background blood-red flash triggered at exact impact
+          Color bgColor = const Color(0xFF030303);
+          if (t > 0.15 && t < 0.8) {
+             double flash = 1.0;
+             if (t < 0.2) {
+                 flash = (t - 0.15) / 0.05; // rapid ramp
+             } else {
+                 flash = 1.0 - ((t - 0.2) / 0.6); // slow exponential decay
+             }
+             bgColor = Color.lerp(const Color(0xFF030303), Colors.red.shade900, flash)!;
+          }
+          
+          return Container(
+            color: bgColor,
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // The Dropping Core Mass
+                      Transform.translate(
+                         offset: Offset(0, dropY),
+                         child: Transform.scale(
+                            scale: scale,
+                            child: const Text('👋', style: TextStyle(fontSize: 100, shadows: [Shadow(color: Colors.black54, blurRadius: 20)])),
+                         ),
+                      ),
+                      
+                      const SizedBox(height: 30),
+                      
+                      // The Title explicitly slammed into view at impact
+                      if (t >= 0.2)
+                        Opacity(
+                          // Strobe in
+                          opacity: t < 0.3 ? (t - 0.2) / 0.1 : 1.0,
+                          child: Transform.scale(
+                            // Squash and settle in
+                            scale: t < 0.4 ? 1.4 - (0.4 * ((t - 0.2) / 0.2)) : 1.0,
+                            child: const Text(
+                              'SLAP THE SHIT\nOUT OF IT!',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 32,
+                                fontWeight: FontWeight.w900,
+                                letterSpacing: 4.0,
+                                height: 1.2,
+                                shadows: [Shadow(color: Colors.redAccent, blurRadius: 30)]
+                              ),
+                            ),
+                          ),
+                        )
+                    ],
                   ),
                 ),
-              ),
-            );
-          },
-        ),
+              ]
+            ),
+          );
+        },
       ),
     );
   }
